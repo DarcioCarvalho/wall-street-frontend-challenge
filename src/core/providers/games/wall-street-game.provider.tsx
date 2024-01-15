@@ -1,5 +1,8 @@
 import React, {
+  Dispatch,
+  MutableRefObject,
   ReactElement,
+  SetStateAction,
   createContext,
   useEffect,
   useRef,
@@ -19,7 +22,33 @@ import { Trending } from '../../../games/wall-street/components/transaction-pane
 import { IGameMessage } from '../interfaces/game-message.interface'
 import '@/core/components/scrollbar/styles.css'
 
-export const WallStreetGameContext = createContext({})
+type WallStreetGameContextProps = {
+  gameStatus: GameStatus,
+  startTimeout: number,
+  result: number,
+  balance: string,
+  results: any[],
+  roundInfo: any,
+  getRoundInfo: (roundId: any) => void,
+  session: ISession,
+  getRegisteredBets: () => void,
+  getResults: () => void,
+  messages: IGameMessage[],
+  setMessages: Dispatch<SetStateAction<IGameMessage[]>>,
+  sendMessage: (message: any) => void,
+  registeredBets: any[],
+  iframeRef: MutableRefObject<HTMLIFrameElement>,
+  executeAction: (event: string, detail?: any) => void,
+  transactions: Record<string, IWallStreetTransaction>,
+  setTransactions: Dispatch<SetStateAction<Record<string, IWallStreetTransaction>>>,
+  registerTransaction: (index: any) => void,
+  soundEnabled: boolean,
+  setSoundEnabled: Dispatch<SetStateAction<boolean>>,
+  soundClick: () => void,
+  playerName: string
+}
+
+export const WallStreetGameContext = createContext({} as WallStreetGameContextProps)
 
 type Props = {
   connection: Socket
@@ -56,7 +85,7 @@ export default function WallStreetGameProvider({
     let audioClick = new Audio('../../../../public/sounds/click.mp3')
     if (soundEnabled) audioClick.play()
     console.log();
-    
+
   }
 
   const [transactions, setTransactions] = useState<
@@ -89,7 +118,7 @@ export default function WallStreetGameProvider({
       connection.on('remove-transaction', onRemoveTransaction)
       connection.on('update-status', (status) => {
         setGameStatus(status)
-        
+
       })
       connection.on('update-balance', (balance: number) => {
         setBalance(balance.toLocaleString())
@@ -101,11 +130,11 @@ export default function WallStreetGameProvider({
 
       setBalance(session.player.balance.toString())
       setplayerName(session.player.username)
-      
+
     }
     connection.on('chat-message', (message: IGameMessage) => {
-      messages.push(message)
-      setMessages(messages)
+      messages.push(message);
+      setMessages(messages);
     })
 
     setMessages([...session.messages])
@@ -127,7 +156,7 @@ export default function WallStreetGameProvider({
       iframeRef?.current?.contentWindow?.dispatchEvent(
         new CustomEvent(event, { detail })
       )
-    } catch {}
+    } catch { }
   }
 
   const getRegisteredBets = () => {
@@ -198,7 +227,7 @@ export default function WallStreetGameProvider({
   const onCashMessage = (data) => {
     const { multiplier, amount, index } = data
     console.log("cash");
-    
+
     //Som de sucesso ao ganhar
     let successSound = new Audio('../../../../sounds/successSound.mp3')
     successSound.play()
@@ -263,13 +292,13 @@ export default function WallStreetGameProvider({
   }
 
   const onRemoveTransaction = (index) => {
-        
+
     const transaction = transactions[index]
     transaction.status = TransactionStatus.UNREGISTERED
     transaction.autoStarted = false
     console.log("transaction")
     setTransactions({ ...transactions, [index]: transaction })
-    
+
     // Reproduza um som de erro
     let errorSound = new Audio('../../../../sounds/errorSound.mp3')
     errorSound.play()
@@ -350,7 +379,7 @@ export default function WallStreetGameProvider({
 
   const sendMessage = (message) => {
     const { userId } = session
-    connection.emit('chat-message', { message, userId })
+    connection.emit('chat-message', { message, userId });
   }
 
   return (

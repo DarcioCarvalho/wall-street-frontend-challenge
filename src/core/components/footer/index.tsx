@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import About from '@/core/components/modal-provably-fair'
 
-export default function Footer({}) {
+export default function Footer({ }) {
   const [showModal, setShowModal] = useState<boolean>(false)
 
   return (
     /* sm:w-[33%] xl:w-[25%] w-[100%] */
     <div
-      className={`fixed z-[999] bottom-0 left-0 flex bg-black h-7 border-[1px] border-gray-700 relative w-full`}
+      className={`z-[999] bottom-0 left-0 flex bg-black h-7 border-[1px] border-gray-700 relative w-full`}
     >
       <div className="flex items-center flex-grow">
         <p className="pl-2 text-white  text-[12px] md:text-[7px] lg:text-[9px] font-thin">

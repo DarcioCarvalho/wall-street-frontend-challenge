@@ -36,8 +36,8 @@ export interface IWallStreetTransaction {
   mode: TransactionMode
   status: TransactionStatus
   amount: number
-  autoExit: boolean
-  exitValue: number
+  autoExit?: boolean
+  exitValue?: number
   trending: Trending
   roundCount: number
 }

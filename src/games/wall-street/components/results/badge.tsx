@@ -1,4 +1,4 @@
-import React,{ useContext} from 'react'
+import React, { useContext } from 'react'
 import { WallStreetResult } from './enums/wall-street-result.enum'
 import {
   ArrowTrendingDownIcon,
@@ -37,7 +37,7 @@ export default function MultiplierBadge({
           onClick={() => handleClick(round_id)}
           className="bg-green-600 cursor-pointer text-gray-100 min-w-[32px] min-h-[32px] rounded-sm flex justify-center items-center"
         >
-          <ArrowTrendingUpIcon className="w-5 h-5" />
+          <ArrowTrendingUpIcon className="w-5 h-5" title="Alta :-)" />
         </button>
       )
 
@@ -47,7 +47,7 @@ export default function MultiplierBadge({
           onClick={() => handleClick(round_id)}
           className="bg-red-600 cursor-pointer text-gray-100 min-w-[32px] min-h-[32px] rounded-sm flex justify-center items-center"
         >
-          <ArrowTrendingDownIcon className="w-5 h-5" />
+          <ArrowTrendingDownIcon className="w-5 h-5" title="Baixa :-(" />
         </button>
       )
 
@@ -57,7 +57,7 @@ export default function MultiplierBadge({
           onClick={() => handleClick(round_id)}
           className="bg-yellow-400 cursor-pointer min-w-[32px] min-h-[32px] rounded-sm flex justify-center items-center"
         >
-          <MinusIcon className="w-5 h-5" />
+          <MinusIcon className="w-5 h-5" title="Stonks!!!" />
         </button>
       )
   }

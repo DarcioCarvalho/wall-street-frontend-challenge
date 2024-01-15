@@ -6,10 +6,10 @@ type Props = {
   balance: string
   executeAction: Function
   openChatHandler?: Function
-  name: string
+  name?: string
 }
 
-import If from '../conditions/if'
+//import If from '../conditions/if'
 
 import {
   QuestionMarkCircleIcon,
@@ -19,6 +19,7 @@ import {
 import { getGameLogo, getHowToPlay } from '@/core/helpers'
 import GameLimitsModal from '@/core/components/shared/modals/wall-street/game-limits'
 import { Chat } from '../chat'
+import { priceFormat } from '@/games/utils/formats'
 
 export default function Navbar({
   game,
@@ -38,11 +39,15 @@ export default function Navbar({
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
 
-  const {soundEnabled, 
-        setSoundEnabled, 
-        soundClick, 
-        playerName
-      } = useContext(WallStreetGameContext)
+  const { soundEnabled,
+    setSoundEnabled,
+    soundClick,
+    playerName,
+    session
+  } = useContext(WallStreetGameContext)
+
+  const userAvatar = !!session.player.avatar_url ?
+    session.player.avatar_url : "https://www.fiscalti.com.br/wp-content/uploads/2021/02/default-user-image.png";
 
   const handleSoundEnabled = (event) => {
     const { checked } = event.target
@@ -69,7 +74,7 @@ export default function Navbar({
     soundClick()
   }
 
-  const handleOutsideClick = (event) => {
+  const handleOutsideClick = (event: any) => {
     if (
       dropdownRef.current &&
       !dropdownRef.current.contains(event.target)
@@ -79,16 +84,27 @@ export default function Navbar({
     setAudioContextAllowed(false)
   }
 
+  /* 
   useEffect(() => {
+    handleWindowResize();
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => window.removeEventListener("resize", handleWindowResize);
+  }, []);
+ */
+
+  useEffect(() => {
+
     document.addEventListener('click', handleOutsideClick)
+
     setTimeout(() => {
-      if (window.AudioContext == false) {
+      if (!window.AudioContext/*  == false */) {
         setAudioContextAllowed(false)
       }
     }, 2000)
-    return () => {
+    return () => /* { */
       document.removeEventListener('click', handleOutsideClick)
-    }
+    /* } */
   }, [])
 
   const isMobileDevice =
@@ -112,14 +128,14 @@ export default function Navbar({
               setShowModal(!showModal)
               soundClick()
             }}
-            className="btn btn-sm py-1 px-2 flex items-center text-gray-500 btn-warning gap-1 rounded-md capitalize text-sm font-normal"
+            className="btn btn-sm py-1 px-2 mr-4 flex items-center text-orange-700 btn-warning gap-1 rounded-md capitalize text-sm font-normal"
           >
             <QuestionMarkCircleIcon className="h-5 w-5" />
             <span className="hidden sm:inline">Como Jogar?</span>
           </button>
 
           <div className="text-sm text-center font-bold mr-1">
-            <p className="text-green-500">R$ {balance}</p>
+            <p className="text-lime-300">{priceFormat(Number(balance))}</p>
             {/* <p className="text-green-500">Name: {playerName}</p> */}
             <p className="text-green-500 text-[10px] mt-[-7px]">
               SALDO REAL
@@ -140,8 +156,8 @@ export default function Navbar({
               <div className="mt-2 menu menu-compact rounded py-2 w-[280px] max-w-[300px] absolute top-[30px] right-[30px] z-10">
                 <div className="flex gap-4 p-4">
                   <img
-                    src="https://www.fiscalti.com.br/wp-content/uploads/2021/02/default-user-image.png"
-                    className="h-12 invert rounded-lg"
+                    src={userAvatar}
+                    className={`h-12 rounded-lg ${userAvatar.endsWith("default-user-image.png") ? "invert" : ""} `}
                   />
                   <div className="mt-1">
                     <p className="font-bold text-xs text-white">
@@ -208,7 +224,7 @@ export default function Navbar({
             </div>} }*/}
 
                 <div
-                  className="px-3 cursor-pointer py-3 text-sm hover:font-bold text-xs item"
+                  className="px-3 cursor-pointer py-3 hover:font-bold text-xs item"
                   onClick={() => {
                     setShowGameLimitsModal(!showGameLimitsModal)
                     soundClick()
@@ -220,7 +236,7 @@ export default function Navbar({
                 </div>
 
                 <a
-                  className="px-3 cursor-pointer py-3 text-sm hover:font-bold text-xs item"
+                  className="px-3 cursor-pointer py-3 hover:font-bold text-xs item"
                   href=""
                 >
                   <label className="cursor-pointer text-white text-xs opacity-75">
@@ -230,7 +246,7 @@ export default function Navbar({
               </div>
             )}
           </div>
-          { <button
+          {<button
             className="btn btn-sm px-1 btn-ghost"
             onClick={() => {
               setShowChat(!showChat)
@@ -238,7 +254,7 @@ export default function Navbar({
             }}
           >
             <ChatBubbleLeftIcon className="w-6 h-6 bg-opacity-50" />
-          </button> }
+          </button>}
         </div>
       </div>
 
@@ -249,8 +265,8 @@ export default function Navbar({
         toggle={setShowGameLimitsModal}
       />
 
-      { <Chat show={showChat} /> }
-     {/*  {audioContextAllowed && isMobileDevice && (
+      {<Chat show={showChat} />}
+      {/*  {audioContextAllowed && isMobileDevice && (
 
         <div className="flex justify-center sm:px-9 text-red-500 font-bold text-sm sm:text-xl">
           Clique no jogo para ativar os sons

@@ -37,11 +37,11 @@ export default function Navbar({
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef(null)
-  const {soundEnabled,
-        setSoundEnabled,
-        soundClick,
-        playerName
-        } = useContext(CrashGameContext)
+  const { soundEnabled,
+    setSoundEnabled,
+    soundClick,
+    playerName
+  } = useContext(CrashGameContext)
 
   const handleSoundEnabled = (event) => {
     const { checked } = event.target
@@ -71,7 +71,7 @@ export default function Navbar({
     document.addEventListener('click', handleOutsideClick)
 
     setTimeout(() => {
-      if (window.AudioContext == false) {
+      if (!window.AudioContext   /* == false */) {
         setAudioContextAllowed(false)
       }
     }, 2000)

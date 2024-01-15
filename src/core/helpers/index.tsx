@@ -2,6 +2,7 @@ import React from 'react'
 
 import motograuLogo from '@/assets/logos/moto-grau.png'
 import wallStreetLogo from '@/assets/logos/wallStreetBull.png'
+import hypetechLogo from '@/assets/logos/hypetech.png'
 
 import motograuHTP from '@/games/motograu/components/HowToPlay/how-to-play'
 import wallStreetHTP from '@/games/wall-street/components/HowToPlay/how-to-play'

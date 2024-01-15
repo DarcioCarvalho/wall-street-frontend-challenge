@@ -20,9 +20,11 @@ export enum ResultColor {
 
 function HomePage() {
   const { setLoading } = useContext<any>(SessionContext)
-  const { iframeRef, balance, executeAction } = useContext<any>(
+  const { iframeRef, balance, executeAction, session, messages, registeredBets } = useContext<any>(
     WallStreetGameContext
   )
+
+
 
   useEffect(() => {
     setLoading(false)
@@ -42,11 +44,11 @@ function HomePage() {
           <div className="w-full h-full flex soft-border-bottom lg:min-h-[70vh]">
             <div className="w-full md:w-[75%] lg:w-[85%] 2xl:w-[90%] relative order-1">
               <div className="flex h-full flex-col">
-                <div className="h-full min-h-[300px] order-3 sm:order-1 relative z-0">
+                <div className="h-full min-h-[300px] order-3 sm:order-1 relative z-0 ">
                   <iframe
                     ref={iframeRef}
                     src="/wall-street/index.html"
-                    className="overflow-hidden w-full h-full pointer-events-none min-h-[200px] sm:min-h-[250px] lg:min-h-[350px]"
+                    className="overflow-hidden w-full h-full pointer-events-none min-h-[200px] sm:min-h-[250px] lg:min-h-[350px] shadow-sm-light shadow-emerald-700"
                   ></iframe>
                   <Display />
                 </div>
@@ -75,14 +77,14 @@ function HomePage() {
           </div>
         </div>
 
-        <div className="grid h-full grow grid-cols-3">
-          <div className="col-span-3 md:col-span-1">
+        <div className="grid h-full grow grid-cols-3 gap-2 px-2">
+          <div className="col-span-3 md:col-span-1 border-2 border-greenLight-200 border-opacity-30">
             <TransactionPanel trending={Trending.UP} />
           </div>
-          <div className="col-span-3 md:col-span-1">
+          <div className="col-span-3 md:col-span-1 border-2 border-amber-200 border-opacity-30">
             <TransactionPanel trending={Trending.IDLE} />
           </div>
-          <div className="col-span-3 md:col-span-1">
+          <div className="col-span-3 md:col-span-1 border-2 border-redLight-300 border-opacity-50">
             <TransactionPanel trending={Trending.DOWN} />
           </div>
         </div>

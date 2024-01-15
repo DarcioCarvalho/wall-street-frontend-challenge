@@ -1,5 +1,8 @@
 import React, {
+  Dispatch,
+  MutableRefObject,
   ReactElement,
+  SetStateAction,
   createContext,
   useEffect,
   useRef,
@@ -19,7 +22,37 @@ import { NotificationType } from '@/store/snackbar'
 import { IGameMessage } from '../interfaces/game-message.interface'
 import '@/core/components/scrollbar/styles.css'
 
-export const CrashGameContext = createContext({})
+type CrashGameContextProps = {
+  gameStatus: GameStatus,
+  startTimeout: Number,
+  multiplier: number,
+  session: ISession,
+  results: any[],
+  getResults: () => void,
+  messages: IGameMessage[],
+  setMessages: Dispatch<SetStateAction<IGameMessage[]>>,
+  sendMessage: (message: any) => void,
+  roundInfo: any,
+  getRoundInfo: (roundId: any) => void,
+  balance: string,
+  registeredBets: any[],
+  getRegisteredBets: () => void,
+  betsHistory: any[],
+  getBetsHistory: () => void,
+  iframeRef: MutableRefObject<HTMLIFrameElement>,
+  executeAction: (event: string, detail?: any) => void,
+  transactions: Record<string, ICrashTransaction>,
+  setTransactions: Dispatch<SetStateAction<Record<string, ICrashTransaction>>>,
+  registerTransaction: (index: any) => void,
+  cancelTransaction: (index: any) => void,
+  cashOut: (index: any) => void,
+  playerName: string,
+  soundEnabled: boolean,
+  setSoundEnabled: Dispatch<SetStateAction<boolean>>,
+  soundClick: () => void
+}
+
+export const CrashGameContext = createContext({} as CrashGameContextProps)
 
 type Props = {
   connection: Socket
@@ -48,7 +81,7 @@ export default function CrashGameProvider({
   )
   const [playerName, setplayerName] = useState<string>('')
 
-  const updateMultiplier = (value) => {
+  const updateMultiplier = (value: number) => {
     setMultiplier(value)
   }
 
@@ -298,14 +331,14 @@ export default function CrashGameProvider({
       iframeRef.current?.contentWindow?.dispatchEvent(
         new CustomEvent(event, { detail })
       )
-    } catch {}
+    } catch { }
   }
 
-  const getRoundInfo = (roundId) => {
+  const getRoundInfo = (roundId: any) => {
     connection.emit('get-round-info', { roundId })
   }
 
-  const sendMessage = (message) => {
+  const sendMessage = (message: any) => {
     const { userId } = session
     connection.emit('chat-message', { message, userId })
   }
@@ -315,7 +348,6 @@ export default function CrashGameProvider({
   }
 
   const getBetsHistory = () => {
-    const { userId } = session
     connection.emit('get-transaction-history')
   }
 
@@ -323,7 +355,7 @@ export default function CrashGameProvider({
     connection.emit('get-results-history')
   }
 
-  const checkPendingTransactions = (index) => {
+  const checkPendingTransactions = (index: any) => {
     if (inAutoMode(index) && transactions[index].autoStarted === true)
       registerTransaction(index)
     else if (
@@ -333,14 +365,14 @@ export default function CrashGameProvider({
     }
   }
 
-  const inAutoMode = (index) => {
+  const inAutoMode = (index: any) => {
     return (
       transactions[index].mode == TransactionMode.AUTO &&
       transactions[index].roundCount > 0
     )
   }
 
-  const registerTransaction = (index) => {
+  const registerTransaction = (index: any) => {
     const { userId, token, socketId } = session
 
     const transaction = transactions[index]
@@ -372,7 +404,7 @@ export default function CrashGameProvider({
     setTransactions({ ...transactions, [index]: transaction })
   }
 
-  const cancelTransaction = (index) => {
+  const cancelTransaction = (index: any) => {
     const transaction = transactions[index]
 
     if (gameStatus == GameStatus.IDLE) {
@@ -395,7 +427,7 @@ export default function CrashGameProvider({
     setTransactions({ ...transactions, [index]: transaction })
   }
 
-  const cashOut = (index) => {
+  const cashOut = (index: any) => {
     const { userId, socketId } = session
     const transaction = transactions[index]
 

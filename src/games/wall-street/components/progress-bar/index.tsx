@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
 type Props = {
   value: number
   max: number
   color: string
-  label?: string
+  label?: string | ReactNode
 }
 
 const getBackgroundColor = (color: string) => {
@@ -36,21 +36,21 @@ export default function ProgressBar({
 }: Props) {
   return (
     <div className="block mx-auto w-full relative items-center text-center">
-        <p className="title-font mb-0 text-center text-[60px] lg:text-[120px] text-gray-200 font-extrabold uppercase game-texts drop-shadow only-stroke">{Math.abs(value)}</p>
-        <p className="text-white lg:mt-[-20px] uppercase text-xs dropshadow font-bold animate-pulse duration-500">Recebendo tendências <br />apostadas pelos jogadores</p>
+      <p className="title-font mb-0 text-center text-[60px] lg:text-[120px] text-gray-200 font-extrabold uppercase game-texts drop-shadow only-stroke">{Math.abs(value)}</p>
+      <p className="text-white lg:mt-[-20px] uppercase text-xs dropshadow font-bold animate-pulse duration-500">{label}</p>
 
-        <div className="w-full relative flex items-center bg-gray-600 bg-opacity-50 border-opacity-50 rounded-md h-2 dark:bg-gray-700 mt-6">
-          <div
-            className={`${getBackgroundColor(
-              color
-            )} h-full transition-all duration-100 rounded-md`}
-            style={{
-              width: `${(value / max) * 100}%`,
-              transitionTimingFunction: 'linear',
-              transitionDuration: '990ms',
-            }}
-          ></div>
-        </div>
+      <div className="w-full relative flex items-center bg-gray-600 bg-opacity-50 border-opacity-50 rounded-md h-2 dark:bg-gray-700 mt-6">
+        <div
+          className={`${getBackgroundColor(
+            color
+          )} h-full transition-all duration-100 rounded-md`}
+          style={{
+            width: `${(value / max) * 100}%`,
+            transitionTimingFunction: 'linear',
+            transitionDuration: '990ms',
+          }}
+        ></div>
+      </div>
     </div>
   )
 }

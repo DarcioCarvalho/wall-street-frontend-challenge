@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+
+import colorExtend from './src/games/utils/colorExtend';
+
 module.exports = {
   content: [
     './index.html',
@@ -18,7 +21,24 @@ module.exports = {
     extend: {
       colors: {
         'green-custom': '#7bd95d',
+        ...colorExtend
+
       },
+
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-30deg)' },
+          '50%': { transform: 'rotate(30deg)' }
+        },
+        sizePulse: {
+          '0%, 100%': { opacity: 0.6, transform: 'scale(1)' },
+          '40%, 70%': { opacity: 1, transform: 'scale(2.5)' },
+        }
+      },
+      animation: {
+        wiggle: 'wiggle 1s ease-in-out infinite',
+        sizePulse: 'sizePulse 1.5s ease-in-out infinite'
+      }
     },
   },
   plugins: [

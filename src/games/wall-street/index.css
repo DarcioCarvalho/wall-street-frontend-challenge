@@ -111,8 +111,11 @@
 }
 
 .wall-street-game .bg-buy.active {
-    border: 1px solid #56e96d6b;
+    outline: 2px solid #80f592;
+    background: linear-gradient(45deg, #2cab40d4, transparent);
     opacity: 1;
+    border: 1px solid #56e96d6b;
+
 }
 
 .wall-street-game .bg-buy:hover {
@@ -128,15 +131,17 @@
     border: 1px solid transparent;
 }
 
+.wall-street-game .bg-bull.active {
+    outline: 2px solid #dcdcdc;
+    background: linear-gradient(45deg, #ffffff4f, transparent);
+    border: 1px solid #ffffff6b;
+    opacity: 1;
+}
+
 .wall-street-game .bg-bull:hover {
     background: linear-gradient(45deg, #ffffff4f, transparent);
     opacity: 1;
     border: 1px solid #ffffff6b;
-}
-
-.wall-street-game .bg-bull.active {
-    border: 1px solid #ffffff6b;
-    opacity: 1;
 }
 
 .wall-street-game .bg-sell {
@@ -147,6 +152,8 @@
 }
 
 .wall-street-game .bg-sell.active {
+    outline: 2px solid #ff9d9d;
+    background: linear-gradient(45deg, #db4931, transparent);
     border: 1px solid #ff4b4b6b;
     opacity: 1;
 }
@@ -191,24 +198,19 @@
 }
 
 .wall-street-game .bet-btn {
-    background: #2cab40;
-    border-bottom: 5px solid #00000047;
     font-size: 16px;
-    transition: all .2s ease-out;
-    border-radius: 10px;
+    transition: all .1s ease-out;
+    border-radius: 12px;
 }
 
 .wall-street-game .cancel-btn {
-    background: #a52222;
-    border-bottom: 5px solid #00000047;
     font-size: 16px;
-    transition: all .2s ease-out;
-    border-radius: 10px;
+    transition: all .1s ease-out;
+    border-radius: 12px;
 }
 
 .wall-street-game .bet-btn:hover {
-    border-bottom: 0px;
-    transition: all .2s ease-out;
+    transition: all .1s ease-out;
 }
 
 .wall-street-game .backdrop {
