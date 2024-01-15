@@ -21,7 +21,13 @@ export interface ISession {
   token: string
   messages: IGameMessage[]
   player: {
-    balance: number
+    balance: number,
+    username?: string,
+    id: number,
+    provider_id: string,
+    user_id: number,
+    avatar_url: string,
+    ggrFlag: boolean,
   }
   results: any[]
   socketId: string
@@ -29,6 +35,7 @@ export interface ISession {
   transactions: any[]
   userId: number
 }
+
 
 type Props = {
   children: ReactElement

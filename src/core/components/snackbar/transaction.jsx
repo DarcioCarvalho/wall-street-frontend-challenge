@@ -1,3 +1,5 @@
+import { priceFormat } from '../../../games/utils/formats';
+
 export default function Transaction({
   amount,
   cashed_out_at,
@@ -5,7 +7,7 @@ export default function Transaction({
 }) {
   return (
     <div
-      className="absolute border-green-600 rounded-lg top-4 z-50"
+      className="absolute border-green-600 rounded-lg top-4 z-50 animate-sizePulse"
       style={{ top: `${index == 0 ? 20 : 30 + 80 * index}px` }}
     >
       <section
@@ -31,7 +33,8 @@ export default function Transaction({
           >
             <div className="font-bold text-xs">Você ganhou</div>
             <strong className="text-white text-sm">
-              R$ {parseFloat(amount * cashed_out_at).toFixed(2)}
+              {priceFormat(parseFloat(amount * cashed_out_at).toFixed(2))}
+              {/* R$ {parseFloat(amount * cashed_out_at).toFixed(2)} */}
             </strong>
           </div>
         </div>

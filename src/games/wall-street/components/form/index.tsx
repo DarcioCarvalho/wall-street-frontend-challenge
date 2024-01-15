@@ -107,7 +107,7 @@ export default function CrashForm({ position }: Props) {
     executeAction('setLine', { color: direction })
   }
 
-    const [showCheck, setShowCheck] = useState(false);
+  const [showCheck, setShowCheck] = useState(false);
 
   const betPlacing = () => {
     setShowCheck(true);
@@ -115,7 +115,6 @@ export default function CrashForm({ position }: Props) {
       setShowCheck(false);
     }, 1000);
   };
-
 
   return (
     <div className="w-full  relative">
@@ -142,7 +141,7 @@ export default function CrashForm({ position }: Props) {
                 id="valueInput"
                 name="amount"
                 class="h-full"
-                value={transaction.amount}
+                value={String(transaction.amount).replace(".", ",")}
                 setValue={updateAmount}
                 label="Valor"
               />
@@ -151,20 +150,21 @@ export default function CrashForm({ position }: Props) {
             <div className="col-span-1">
               <div className="grid w-full gap-2">
                 <button
+                  onClick={doubleAmount}
+                  type="button"
+                  className="btn min-h-8 max-h-10 rounded grow text-sm capitalize !border-solid !border !border-b-2 btn-ghost hover:bg-greenLight-200 hover:bg-opacity-30 hover:text-greenLight-200 hover:text-base font-normal !border-gray-700 active:bg-greenLight-600 active:bg-opacity-30"
+                >
+                  2x
+                </button>
+
+                <button
                   onClick={divideAmount}
                   type="button"
-                  className="btn min-h-8 max-h-10 rounded grow text-xl btn-ghost font-normal border-gray-700"
+                  className="btn min-h-8 max-h-10 rounded grow text-xl !border-solid !border !border-b-2 btn-ghost hover:bg-greenLight-200 hover:bg-opacity-30 hover:text-greenLight-200 hover:text-2xl font-normal !border-gray-700 active:bg-greenLight-600 active:bg-opacity-30"
                 >
                   &frac12;
                 </button>
 
-                <button
-                  onClick={doubleAmount}
-                  type="button"
-                  className="btn min-h-8 max-h-10 rounded grow text-sm capitalize btn-ghost font-normal border-gray-700"
-                >
-                  2x
-                </button>
               </div>
             </div>
           </div>
@@ -212,37 +212,38 @@ export default function CrashForm({ position }: Props) {
             </If>
           </If>
           <If condition={transaction.mode == 'common'}>
-            <If
-              condition={
-                transaction == null ||
-                transaction.status != TransactionStatus.PENDING
-              }
-            >
-              <button
-                onClick={betPlacing}
-                className={`bet-btn min-h-[50px] md:min-h-[100px] font-bold min-h-8 max-h-10 rounded text-gray-200 text-xs`}
+            <>
+              <If
+                condition={
+                  transaction == null ||
+                  transaction.status != TransactionStatus.PENDING
+                }
               >
-                {showCheck ? <svg className="w-12 h-12 text-center mx-auto text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path> </svg> : 'Realizar entrada'}
-              </button>
-            </If>
-
-            <If
-              condition={
-                gameStatus != GameStatus.IDLE &&
-                transaction.status == TransactionStatus.PENDING
-              }
-            >
-              <div className="flex flex-col min-w-6/12">
                 <button
-                  type="button"
-                  className={`cancel-btn min-h-[50px] md:min-h-[100px] font-bold min-h-8 max-h-10 rounded text-gray-200 text-xs`}
-                  onClick={cancelFuterTransaction}
+                  onClick={betPlacing}
+                  className={`bet-btn md:min-h-[100px] font-bold min-h-8 max-h-10 rounded text-white text-xs bg-lime-500 hover:bg-lime-700 active:bg-lime-800 active:border active:border-lime-500 uppercase px-2 leading-6`}
                 >
-                  Cancelar <br /> entrada
+                  {showCheck ? <svg className="w-12 h-12 text-center mx-auto text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"> <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path> </svg> : 'Realizar entrada'}
                 </button>
-              </div>
-            </If>
+              </If>
 
+              <If
+                condition={
+                  gameStatus != GameStatus.IDLE &&
+                  transaction.status == TransactionStatus.PENDING
+                }
+              >
+                <div className="flex flex-col min-w-6/12">
+                  <button
+                    type="button"
+                    className={`cancel-btn md:min-h-[100px] font-bold min-h-8 max-h-10 rounded text-gray-200 text-xs bg-red-600 hover:bg-red-800 active:bg-red-900 active:border active:border-red-600 uppercase px-2 leading-6`}
+                    onClick={cancelFuterTransaction}
+                  >
+                    Cancelar <br /> entrada
+                  </button>
+                </div>
+              </If>
+            </>
           </If>
         </section>
       </form>

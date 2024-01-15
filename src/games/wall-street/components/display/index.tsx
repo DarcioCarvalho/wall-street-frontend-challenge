@@ -3,39 +3,34 @@ import ProgressBar from '@/games/wall-street/components/progress-bar'
 import React, { useContext } from 'react'
 import If from '@/core/components/conditions/if'
 import { WallStreetGameContext } from '@/core/providers/games/wall-street-game.provider'
+import { TitleResult } from './title-result'
 
 export default function GameTexts(props) {
   const { startTimeout, gameStatus, result } = useContext<any>(
     WallStreetGameContext
-  )
+  );
 
   return (
     <div className="flex pointer-events-none justify-center align-sub h-full text-center absolute top-0 left-0 right-0">
       <div className="mt-8">
         <If condition={gameStatus == GameStatus.RESULT}>
-          <h1 className="text-xl flex gap-4 font-medium text-white drop uppercase">
-            {' '}
-            {result == 0
-              ? 'Stonks!'
-              : result == 1
-              ? 'O Mercado Subiu'
-              : 'O Mercado Desceu'}
-            !
-          </h1>
+          <TitleResult result={result} />
         </If>
 
         <div className="transitionTest">
-        <If condition={gameStatus == GameStatus.IDLE}>
-          <div className="backdrop"></div>
-          <div className="flex w-[300px] max-w-full">
-            <ProgressBar
-              max={10}
-              value={startTimeout}
-              color="blue"
-              label="Recolhendo palpites - "
-            />
-          </div>
-        </If>
+          <If condition={gameStatus == GameStatus.IDLE}>
+            <>
+              <div className="backdrop"></div>
+              <div className="flex w-[300px] max-w-full">
+                <ProgressBar
+                  max={10}
+                  value={startTimeout}
+                  color="blue"
+                  label={<>Recebendo tendências <br />apostadas pelos jogadores</>}
+                />
+              </div>
+            </>
+          </If>
         </div>
 
         <If condition={gameStatus == GameStatus.RUNNING}>

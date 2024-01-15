@@ -7,13 +7,19 @@ import {
 } from '@heroicons/react/24/outline'
 import { WallStreetGameContext } from '@/core/providers/games/wall-street-game.provider'
 import { Trending } from './enums/trending.enum'
+import { priceFormat } from '@/games/utils/formats'
+import { ArrowUpIcon } from '../icons/arrow-up-icon'
+import colorExtend from '@/games/utils/colorExtend';
+import { MinusCircleIcon } from '../icons/minus-circle-icon'
+import colors from 'tailwindcss/colors'
+
 
 type Props = {
   trending: Trending
 }
 
 function Tab({ trending }: Props) {
-  const { registeredBets, getRegisteredBets } = useContext<any>(
+  const { registeredBets, getRegisteredBets, playerName } = useContext<any>(
     WallStreetGameContext
   )
 
@@ -37,6 +43,12 @@ function Tab({ trending }: Props) {
     return sum.toFixed(2)
   }
 
+  const icon = trending === Trending.UP ?
+    <ArrowUpIcon fill={colorExtend.greenLight[400]} className="mr-3" /> :
+    trending === Trending.DOWN ?
+      <ArrowUpIcon fill={colorExtend.redLight[500]} className="mr-3 rotate-180" /> :
+      <MinusCircleIcon fill={colors.amber[500]} className="mr-3" />
+
   return (
     <div className="h-auto border-r border-white border-opacity-10">
 
@@ -51,35 +63,50 @@ function Tab({ trending }: Props) {
         {getRound(trending)}
       </div>
 
-      <div className="flex justify-between rounded bg-opacity-25 items-center p-3">
+      <div className="flex justify-between rounded bg-opacity-25 items-center p-3  bg-slate-500">
         <div className="flex items-center gap-1">
+
+          {icon}
           <UserIcon className="h-3.5 w-3.5" />
           <div className="text-sm">{list.length}</div>
         </div>
 
-        <span className="text-sm">R$ {sum(list)}</span>
+
+
+        <span className="text-sm">{priceFormat(Number(sum(list)))}</span>
+        {/* <span className="text-sm">R$ {sum(list)}</span> */}
       </div>
 
       <div className="h-full flex-shrink-1 flex-grow basis-0  px-3 overflow-y-scroll scrollbar-w-0 min-h-[300px] max-h-[300px] scrollbar-track-gray-400 scrollbar-thumb-gray-700 scrollbar scrollbar-track-rounded scrollbar-thumb-rounded">
 
         <div className="flex flex-col ">
           {list.map((item, index) => {
-            if (item)
+            if (item) {
+              const sessionPlayerStyle = item.player.username === playerName ?
+                "text-amber-400 font-bold" : "";
+
+              const userAvatar = !!item.player.avatar_url ?
+                item.player.avatar_url : "https://www.fiscalti.com.br/wp-content/uploads/2021/02/default-user-image.png";
+
+
               return (
                 <div
                   key={index}
-                  className="border-b last:border-b-0 px-3 py-1 border-b-slate-700 grid grid-cols-12"
+                  className=" border-b last:border-b-0 px-3  py-1 border-b-slate-700 grid grid-cols-12"
                 >
-                  <div className="col-span-8">
-                    <span className="text-xs">
+                  <div className="col-span-8 flex items-center gap-2 ">
+                    <img src={userAvatar} className="w-4 h-4" />
+                    <span className={`text-xs ${sessionPlayerStyle}`}>
                       {item.player.username}
                     </span>
                   </div>
-                  <div className="col-span-4">
-                    <span className="text-xs">{item.amount}</span>
+                  <div className="col-span-4 ml-auto ">
+                    <span className={`text-xs ${sessionPlayerStyle}`}>{priceFormat(item.amount)}</span>
                   </div>
                 </div>
               )
+            }
+
           })}
         </div>
       </div>
